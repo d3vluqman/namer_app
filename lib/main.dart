@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (selectedIndex == 0) {
       page = GeneratorPage();
     } else if (selectedIndex == 1) {
-      page = Placeholder();
+      page = FavoritesPage();
     } else {
       throw UnimplementedError("no widget for $selectedIndex");
     }
@@ -140,6 +140,33 @@ class GeneratorPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class FavoritesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+
+    if (appState.favorites.isEmpty) {
+      return Center(
+        child: Text("No favorite pair yet."),
+      );
+    }
+
+    return ListView(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: Text("You have ${appState.favorites.length} favorite pairs:"),
+        ),
+        for (var pair in appState.favorites)
+          ListTile(
+            leading: Icon(Icons.favorite),
+            title: Text(pair.asLowerCase),
+          )
+      ],
     );
   }
 }
